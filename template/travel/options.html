@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Travel Options</h2>
+<form method="post" class="mb-4">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-3">
+            <select name="type" class="form-select">
+                <option value="">All Types</option>
+                <option value="Flight">Flight</option>
+                <option value="Train">Train</option>
+                <option value="Bus">Bus</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="source" class="form-control" placeholder="Source">
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="destination" class="form-control" placeholder="Destination">
+        </div>
+        <div class="col-md-2">
+            <input type="date" name="date" class="form-control">
+        </div>
+        <div class="col-md-1">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>ID</th>
+            <th>Source</th>
+            <th>Destination</th>
+            <th>Date & Time</th>
+            <th>Price</th>
+            <th>Seats</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for option in options %}
+        <tr>
+            <td>{{ option.type }}</td>
+            <td>{{ option.travel_id }}</td>
+            <td>{{ option.source }}</td>
+            <td>{{ option.destination }}</td>
+            <td>{{ option.date_time }}</td>
+            <td>{{ option.price }}</td>
+            <td>{{ option.available_seats }}</td>
+            <td>
+                {% if user.is_authenticated %}
+                <a href="{% url 'book_travel' option.travel_id %}" class="btn btn-sm btn-success">Book</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

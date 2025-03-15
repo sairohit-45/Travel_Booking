@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Book {{ travel_option }}</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="number_of_seats" class="form-label">Number of Seats</label>
+        <input type="number" class="form-control" id="number_of_seats" name="number_of_seats" min="1" max="{{ travel_option.available_seats }}" required>
+    </div>
+    <p>Total Price: <span id="total_price">0</span></p>
+    <button type="submit" class="btn btn-primary">Confirm Booking</button>
+</form>
+<script>
+    document.getElementById('number_of_seats').addEventListener('input', function() {
+        let seats = this.value;
+        let price = {{ travel_option.price }};
+        document.getElementById('total_price').textContent = (seats * price).toFixed(2);
+    });
+</script>
+{% endblock %}
+
+
+
+
